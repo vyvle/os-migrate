@@ -98,6 +98,10 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     security_group_rule,
 )
 
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
+
 
 def run_module():
     argument_spec = openstack_full_argument_spec(
@@ -117,6 +121,8 @@ def run_module():
         # if the file representation matches it.
         # supports_check_mode=True,
     )
+
+    check_module_dependencies(module)
 
     sdk, conn = openstack_cloud_from_module(module)
     ser_secrule = security_group_rule.SecurityGroupRule.from_data(module.params["data"])

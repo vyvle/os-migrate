@@ -2,8 +2,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.dependencies import HAS_OPENSTACK
+if HAS_OPENSTACK:
+    from openstack import exceptions as os_exc
+
 from copy import deepcopy
-from openstack import exceptions as os_exc
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import const, exc
 
 

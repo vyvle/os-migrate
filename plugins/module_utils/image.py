@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import hashlib
-import openstack
 import os
 
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
@@ -12,7 +11,9 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     reference,
     resource,
 )
-
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.dependencies import HAS_OPENSTACK
+if HAS_OPENSTACK:
+    import openstack
 
 class Image(resource.Resource):
 

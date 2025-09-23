@@ -233,6 +233,9 @@ except ImportError:
     )
 
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import server
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
 
 
 def run_module():
@@ -248,6 +251,8 @@ def run_module():
     module = AnsibleModule(
         argument_spec=argument_spec,
     )
+
+    check_module_dependencies(module)
 
     sdk, conn = openstack_cloud_from_module(module)
     block_device_mapping = module.params["block_device_mapping"]

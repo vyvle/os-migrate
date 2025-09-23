@@ -100,6 +100,9 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils import files
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     security_group,
 )
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
 
 
 def run_module():
@@ -120,6 +123,8 @@ def run_module():
         # if the file representation matches it.
         # supports_check_mode=True,
     )
+
+    check_module_dependencies(module)
 
     sdk, conn = openstack_cloud_from_module(module)
     sdk_sec = conn.network.find_security_group(

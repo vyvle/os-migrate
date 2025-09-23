@@ -64,6 +64,9 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import filesystem
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import validation
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
 
 
 def run_module():
@@ -84,6 +87,8 @@ def run_module():
         # check mode.
         supports_check_mode=True,
     )
+
+    check_module_dependencies(module)
 
     file_structs = []
     for path in module.params["paths"]:

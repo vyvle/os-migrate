@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import openstack
 import time
 
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
@@ -11,6 +10,9 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     reference,
     resource,
 )
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.dependencies import HAS_OPENSTACK
+if HAS_OPENSTACK:
+    import openstack
 
 
 def server_floating_ips(conn, server_ports):

@@ -4,8 +4,6 @@ __metaclass__ = type
 
 from copy import deepcopy
 
-import openstack
-
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     const,
     exc,
@@ -24,6 +22,9 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils.server_volum
     server_volumes,
     ServerVolume,
 )
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.dependencies import HAS_OPENSTACK
+if HAS_OPENSTACK:
+    import openstack
 
 
 class Server(resource.Resource):

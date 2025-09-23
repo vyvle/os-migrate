@@ -2,16 +2,19 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import openstack
-from openstack.exceptions import DuplicateResource, HttpException, ResourceFailure
+
 
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import const
+
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.dependencies import HAS_OPENSTACK
+if HAS_OPENSTACK:
+    import openstack
+    from openstack.exceptions import DuplicateResource, HttpException, ResourceFailure
 
 
 def image_id(conn, ref, required=True):
     """Fetch ID of Image identified by reference dict `ref`. Use
     OpenStack SDK connection `conn` to fetch the info. If `required`,
-    ensure the fetch is successful.
 
     Returns: the ID, or None if not found and not `required`
 
@@ -411,31 +414,32 @@ def role_ref(conn, id_, required=True):
 
     return ref
 
+if HAS_OPENSTACK:
 
-def _fetch_ref(conn, get_method, id_, required=True, get_project_info=True):
-    if id_ is None:
-        return None
+    def _fetch_ref(conn, get_method, id_, required=True, get_project_info=True):
+        if id_ is None:
+            return None
 
-    resource = get_method(id_, ignore_missing=not required)
-    if resource is None:
-        return None
+        resource = get_method(id_, ignore_missing=not required)
+        if resource is None:
+            return None
 
-    if get_project_info:
-        if isinstance(resource, openstack.image.v2.image.Image):
-            project_name, domain_name = _fetch_project_name_and_domain_name(
-                conn, resource.owner_id
-            )
+        if get_project_info:
+            if isinstance(resource, openstack.image.v2.image.Image):
+                project_name, domain_name = _fetch_project_name_and_domain_name(
+                    conn, resource.owner_id
+                )
+            else:
+                project_name, domain_name = _fetch_project_name_and_domain_name(
+                    conn, resource.project_id
+                )
         else:
-            project_name, domain_name = _fetch_project_name_and_domain_name(
-                conn, resource.project_id
-            )
-    else:
-        project_name, domain_name = None, None
-    return {
-        "name": resource["name"],
-        "project_name": project_name,
-        "domain_name": domain_name,
-    }
+            project_name, domain_name = None, None
+        return {
+            "name": resource["name"],
+            "project_name": project_name,
+            "domain_name": domain_name,
+        }
 
 
 def _fetch_id(conn, get_method, ref, required=True):

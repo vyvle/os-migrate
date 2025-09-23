@@ -114,6 +114,10 @@ except ImportError:
         openstack_cloud_from_module,
     )
 
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
+
 
 def main():
     argument_spec = openstack_full_argument_spec(
@@ -124,6 +128,8 @@ def main():
     module = AnsibleModule(
         argument_spec=argument_spec,
     )
+
+    check_module_dependencies(module)
 
     srv = module.params["server"]
     filters = module.params["filters"]

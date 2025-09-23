@@ -301,6 +301,9 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils.volume_commo
     OpenstackVolumeTransfer,
     DEFAULT_TIMEOUT,
 )
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
 
 import re
 
@@ -384,6 +387,8 @@ def run_module():
     module = AnsibleModule(
         argument_spec=argument_spec,
     )
+
+    check_module_dependencies(module)
 
     sdk, conn = openstack_cloud_from_module(module)
     ser_server = server.Server.from_data(module.params["data"])

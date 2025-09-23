@@ -2,14 +2,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import openstack
 
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     const,
     reference,
     resource,
 )
-
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.dependencies import HAS_OPENSTACK
+if HAS_OPENSTACK:
+    import openstack
 
 class Keypair(resource.Resource):
     # according to https://github.com/openstack/openstacksdk/blob/a4a2a7b42ec2ae7e186b44aeb7242fddd84944f7/openstack/cloud/_compute.py#L601

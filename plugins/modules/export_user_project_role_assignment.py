@@ -104,6 +104,9 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils import files
 from ansible_collections.os_migrate.os_migrate.plugins.module_utils import (
     user_project_role_assignment,
 )
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
 
 
 def run_module():
@@ -126,6 +129,8 @@ def run_module():
         # if the file representation matches it.
         # supports_check_mode=True,
     )
+
+    check_module_dependencies(module)
 
     user_id = module.params["user_id"]
     project_id = module.params["project_id"]

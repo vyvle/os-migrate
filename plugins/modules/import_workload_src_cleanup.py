@@ -282,6 +282,10 @@ from ansible_collections.os_migrate.os_migrate.plugins.module_utils.volume_commo
     OpenstackVolumeClean,
 )
 
+from ansible_collections.os_migrate.os_migrate.plugins.module_utils.checks import (
+    check_module_dependencies,
+)
+
 
 class OpenStackSourceHostCleanup(OpenstackVolumeClean):
     """Removes temporary migration volumes and snapshots from source cloud."""
@@ -346,6 +350,8 @@ def run_module():
     module = AnsibleModule(
         argument_spec=argument_spec,
     )
+
+    check_module_dependencies(module)
 
     sdk, conn = openstack_cloud_from_module(module)
     src = server.Server.from_data(module.params["data"])
